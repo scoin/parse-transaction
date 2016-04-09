@@ -42,6 +42,6 @@ $python decoderawtransaction.py 0100000001763b0b38e91d90a75fde6425be72285e73e81f
 
 To run the tests:
 
-```bash
+```
 $ python test.py
 ```
