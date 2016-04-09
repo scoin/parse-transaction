@@ -1,3 +1,4 @@
+from hashlib import sha256
 import binascii
 import json
 
@@ -7,6 +8,7 @@ class TransactionDecoder:
 		self.__tx = binascii.unhexlify(hexstring)
 		self.__position = 0
 		self.transaction = {}
+		self.transaction["txid"] = self.get_txid(hexstring)
 		self.transaction["version"] = self.__get_int_bytes(4)
 
 		self.transaction["num_inputs"] = self.__get_int_bytes(1)
@@ -37,6 +39,11 @@ class TransactionDecoder:
 		self.transaction["locktime"] = self.__get_int_bytes(4)
 
 
+	@staticmethod
+	def get_txid(hexstring):
+		return sha256(sha256(hexstring.decode('hex_codec')).digest()).digest()[::-1].encode('hex_codec')
+
+
 	def __read_tx_bytes(self, bytecount):
 		self.__position += bytecount
 		return self.__tx[self.__position - bytecount : self.__position]
@@ -49,7 +56,7 @@ class TransactionDecoder:
 
 		num = int(binascii.hexlify(intbytes), 16)
 
-		#handle compactsize unsigned ints
+		# #handle compactsize unsigned ints
 		if(num > 252 and bytecount == 1):
 			return self.__get_int_bytes(pow(2, num - 252))
 
@@ -68,3 +75,6 @@ class TransactionDecoder:
 
 	def __repr__(self):
 		return json.dumps(self.transaction, sort_keys=True, indent=4)
+
+if __name__ == "__main__":
+	__package__ = "decoder.transaction"

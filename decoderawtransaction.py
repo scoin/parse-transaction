@@ -1,12 +1,12 @@
 import sys
-from TransactionDecoder import TransactionDecoder
+from decoder.transaction import TransactionDecoder
 
 if __name__ == "__main__":
 
 	try:
 		hexdata = sys.argv[1]
 	except Exception, e:
-		print "Usage: txdecoder.py <rawtxdata>"
+		print "Usage: decoderawtransaction.py <rawtxdata>"
 	else:
-		print TransactionDecoder(sys.argv[1])
+		print TransactionDecoder(hexdata)
 
