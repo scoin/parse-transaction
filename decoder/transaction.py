@@ -55,7 +55,7 @@ class TransactionDecoder:
     def __parse_inputs(self, n):
         input_dict ={
             "txid": self.__get_string_bytes(32, reverse=True),
-            "vout": self.__get_int_bytes(4)
+            "index": self.__get_int_bytes(4)
         }
         input_bytes = self.__get_int_bytes(1)
         input_dict["scriptSig"] = self.__get_string_bytes(input_bytes)
@@ -64,11 +64,11 @@ class TransactionDecoder:
 
     def __parse_outputs(self, n):
         output_dict = {
-            "qty": self.__get_int_bytes(8),
+            "value": self.__get_int_bytes(8),
             "n": n
         }
         output_bytes = self.__get_int_bytes(1)
-        output_dict["script"] = self.__get_string_bytes(output_bytes)
+        output_dict["scriptPubKey"] = self.__get_string_bytes(output_bytes)
         return output_dict
 
 
