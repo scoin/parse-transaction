@@ -14,28 +14,11 @@ class TransactionDecoder:
 
         self.transaction["num_inputs"] = self.__get_int_bytes(1)
 
-        self.transaction["vin"] = []
-
-        for i in range(self.transaction["num_inputs"]):
-            self.transaction["vin"].append({
-                "txid": self.__get_string_bytes(32, reverse=True),
-                "vout": self.__get_int_bytes(4)
-            })
-            scriptBytes = self.__get_int_bytes(1)
-            self.transaction["vin"][i]["scriptSig"] = self.__get_string_bytes(scriptBytes)
-            self.transaction["vin"][i]["sequence"] = self.__get_string_bytes(4)
+        self.transaction["vin"] = [self.__parse_inputs(n) for n in range(self.transaction["num_inputs"])]
 
         self.transaction["num_outputs"] = self.__get_int_bytes(1)
 
-        self.transaction["vout"] = []
-
-        for j in range(self.transaction["num_outputs"]):
-            self.transaction["vout"].append({
-                "qty": self.__get_int_bytes(8),
-                "n": j
-            })
-            outputBytes = self.__get_int_bytes(1)
-            self.transaction["vout"][j]["script"] = self.__get_string_bytes(outputBytes)
+        self.transaction["vout"] = [self.__parse_outputs(n) for n in range(self.transaction["num_outputs"])]            
 
         self.transaction["locktime"] = self.__get_int_bytes(4)
 
@@ -68,6 +51,26 @@ class TransactionDecoder:
             strbytes = strbytes[::-1]
 
         return str(binascii.hexlify(strbytes))
+
+    def __parse_inputs(self, n):
+        input_dict ={
+            "txid": self.__get_string_bytes(32, reverse=True),
+            "vout": self.__get_int_bytes(4)
+        }
+        input_bytes = self.__get_int_bytes(1)
+        input_dict["scriptSig"] = self.__get_string_bytes(input_bytes)
+        input_dict["sequence"] = self.__get_string_bytes(4)
+        return input_dict
+
+    def __parse_outputs(self, n):
+        output_dict = {
+            "qty": self.__get_int_bytes(8),
+            "n": n
+        }
+        output_bytes = self.__get_int_bytes(1)
+        output_dict["script"] = self.__get_string_bytes(output_bytes)
+        return output_dict
+
 
     def __getitem__(self, item):
         return self.transaction[item]
