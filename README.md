@@ -27,14 +27,14 @@ $ python decoderawtransaction.py 0100000001763b0b38e91d90a75fde6425be72285e73e81
             "scriptSig": "47304402202bb8b61244ee0ebc2f6d00f563a35aa7e5afc1727446086e45259c1fb00d194702201020df0479220ca6dadaffd82ab8f4a4c9fe8ed99b6c6d6c71678f2a582b0d65012103010f2163599d3dd737e1347b54bf836fdd7bcb5dbe15787aee5b70f48ecd9abd", 
             "sequence": "ffffffff", 
             "txid": "6b1f77fd44b7594b571d322f071fe8735e2872be2564de5fa7901de9380b3b76", 
-            "vout": 0
+            "index": 0
         }
     ], 
     "vout": [
         {
             "n": 0, 
-            "qty": 2384000, 
-            "script": "76a9147a4f98ac48bf70308ed7731ce97a539a01d4209388ac"
+            "value": 2384000, 
+            "scriptPubKey": "76a9147a4f98ac48bf70308ed7731ce97a539a01d4209388ac"
         }
     ]
 }
